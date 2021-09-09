@@ -1,0 +1,47 @@
+version: '3.5'
+
+networks:
+  mysql:
+    external: false
+  internal:
+    external: false
+services:
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - internal
+    volumes: 
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: owadb
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - internal
+      - mysql
+    ports:
+      - "83:8080"
+
+  api:
+    build: .
+    # image: evablis/api-sql
+    restart: always
+    volumes: 
+        - ./app:/app
+    networks:
+      - internal
+      - mysql
+    ports:
+      - "8000:80"
+
+volumes: 
+  mysql:
