@@ -33,7 +33,6 @@ services:
 
   api:
     build: .
-    # image: evablis/api-sql
     restart: always
     volumes: 
         - ./app:/app
